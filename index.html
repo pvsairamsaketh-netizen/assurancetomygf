@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Akku ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at 20% 20%, #3b0a1f, #000),
+              radial-gradient(circle at 80% 80%, #1a0010, #000);
+  color: white;
+  overflow-x: hidden;
+}
+
+/* Envelope */
+.envelope-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.envelope {
+  width: 240px;
+  height: 160px;
+  background: linear-gradient(145deg, #ff4b5c, #ff6b81);
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s;
+}
+
+.envelope:active {
+  transform: scale(0.95);
+}
+
+.envelope:before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  border-left: 120px solid transparent;
+  border-right: 120px solid transparent;
+  border-bottom: 80px solid #ff4b5c;
+  transition: 1s;
+}
+
+.envelope.open:before {
+  transform: rotateX(180deg);
+}
+
+/* Main Card */
+.container {
+  display: none;
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 40px rgba(255,75,92,0.3);
+}
+
+/* Image */
+.photo-rect {
+  width: 100%;
+  border-radius: 15px;
+  margin-bottom: 15px;
+}
+
+/* Text */
+.text-line {
+  margin: 12px 0;
+  line-height: 1.7;
+  font-size: 15px;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+}
+
+/* Final line glow */
+.final {
+  text-align: center;
+  font-size: 18px;
+  color: #ff6b81;
+  animation: glow 2s infinite alternate;
+}
+
+/* Button */
+button {
+  margin-top: 25px;
+  padding: 12px 25px;
+  border-radius: 25px;
+  border: none;
+  background: #ff4b5c;
+  color: white;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Falling Elements */
+.rose, .petal, .sparkle-bg {
+  position: fixed;
+  top: -10px;
+  pointer-events: none;
+}
+
+.rose { animation: fallRose linear forwards; }
+.petal { animation: fallPetal linear forwards; }
+.sparkle-bg { animation: fallSparkle linear forwards; }
+
+/* Animations */
+@keyframes fallRose {
+  0% { transform: translateY(-10vh) translateX(0); }
+  100% { transform: translateY(110vh) translateX(40px); }
+}
+
+@keyframes fallPetal {
+  0% { transform: translateY(-10vh) translateX(0); }
+  100% { transform: translateY(110vh) translateX(-40px); }
+}
+
+@keyframes fallSparkle {
+  0% { transform: translateY(-10vh); }
+  100% { transform: translateY(110vh); }
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 10px #ff4b5c; }
+  to { text-shadow: 0 0 30px #ff4b5c, 0 0 60px #ff6b81; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Envelope -->
+<div class="envelope-wrapper">
+  <div class="envelope" id="envelope"></div>
+</div>
+
+<!-- Letter -->
+<div class="container" id="main">
+  <h2 style="text-align:center;">For My Akku ❤️</h2>
+
+  <img src="output_padded.jpeg" class="photo-rect">
+
+  <div id="text"></div>
+
+  <button onclick="playMusic()">Play Music 🎶</button>
+</div>
+
+<audio id="bgMusic" src="music.mp3"></audio>
+
+<script>
+let opened = false;
+
+const lines = [
+"Akku, you are not just someone in my life... you are my peace, my happiness, and my strongest feeling.",
+"No matter how life changes, one thing will never change — my love for you.",
+"I choose you every single day, without any doubt, without any fear.",
+"I will build my future with you. I will complete my M.Tech and grow stronger for us.",
+"After our marriage, we will always stay together. No distance, no loneliness.",
+"I will always make sure you are happy, understood, and loved in every moment.",
+"Whenever you need to go to Chennai, I will take care of everything for you.",
+"And your dreams — your PhD — I will support you till the end."
+];
+
+const finalLine = "You are my forever, Akku ❤️";
+
+const envelope = document.getElementById("envelope");
+
+/* OPEN */
+function openEnvelope() {
+  if (opened) return;
+  opened = true;
+
+  envelope.classList.add("open");
+  burstRoses(25);
+
+  setTimeout(() => {
+    document.querySelector(".envelope-wrapper").style.display = "none";
+    document.getElementById("main").style.display = "block";
+    typeWriter();
+  }, 1000);
+}
+
+envelope.addEventListener("click", openEnvelope);
+envelope.addEventListener("touchstart", openEnvelope);
+
+/* TYPEWRITER */
+function typeWriter() {
+  let container = document.getElementById("text");
+  container.innerHTML = "";
+
+  let i = 0;
+
+  function showLine() {
+    if (i >= lines.length) {
+      showFinal();
+      return;
+    }
+
+    let p = document.createElement("p");
+    p.className = "text-line";
+    container.appendChild(p);
+
+    let j = 0;
+    function typeChar() {
+      if (j < lines[i].length) {
+        p.textContent += lines[i][j];
+        j++;
+        setTimeout(typeChar, 25);
+      } else {
+        i++;
+        setTimeout(showLine, 500);
+      }
+    }
+    typeChar();
+  }
+
+  showLine();
+}
+
+/* FINAL TOUCH */
+function showFinal() {
+  let container = document.getElementById("text");
+
+  let p = document.createElement("p");
+  p.className = "text-line final";
+  p.textContent = finalLine;
+  container.appendChild(p);
+
+  burstRoses(40); // 🌹 explosion
+}
+
+/* MUSIC */
+function playMusic() {
+  let audio = document.getElementById("bgMusic");
+  audio.play();
+}
+
+/* ROSES BURST */
+function burstRoses(count) {
+  for (let i = 0; i < count; i++) {
+    let r = document.createElement("div");
+    r.className = "rose";
+    r.innerHTML = "🌹";
+    r.style.left = Math.random() * 100 + "vw";
+    r.style.animationDuration = (4 + Math.random() * 4) + "s";
+    document.body.appendChild(r);
+    setTimeout(() => r.remove(), 8000);
+  }
+}
+
+/* CONTINUOUS DECOR */
+setInterval(() => {
+  let p = document.createElement("div");
+  p.className = "petal";
+  p.innerHTML = "🌸";
+  p.style.left = Math.random() * 100 + "vw";
+  p.style.animationDuration = (6 + Math.random() * 6) + "s";
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), 9000);
+}, 500);
+
+setInterval(() => {
+  let s = document.createElement("div");
+  s.className = "sparkle-bg";
+  s.innerHTML = "✨";
+  s.style.left = Math.random() * 100 + "vw";
+  s.style.animationDuration = (4 + Math.random() * 4) + "s";
+  document.body.appendChild(s);
+  setTimeout(() => s.remove(), 7000);
+}, 300);
+
+</script>
+
+</body>
+</html>
